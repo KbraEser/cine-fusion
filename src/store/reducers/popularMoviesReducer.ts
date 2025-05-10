@@ -1,6 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface Movie {}
+interface Movie {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
 
 interface PopularMoviesState {
   page: number;
@@ -28,9 +43,23 @@ const popularMoviesSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
+    fetchPopularMoviesSuccess: (state, action) => {
+      state.loading = false;
+      state.results = action.payload.results;
+      state.total_pages = action.payload.total_pages;
+      state.total_results = action.payload.total_results;
+    },
+    fetchPopularMoviesFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-const {} = popularMoviesSlice.actions;
+export const {
+  fetchPopularMoviesRequest,
+  fetchPopularMoviesSuccess,
+  fetchPopularMoviesFailure,
+} = popularMoviesSlice.actions;
 
 export default popularMoviesSlice.reducer;
