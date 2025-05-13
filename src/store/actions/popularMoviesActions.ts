@@ -8,11 +8,8 @@ import {
 import { toast } from "react-toastify";
 
 interface GetCategoryWithFilterDTO {
-  PageNumber: number;
-  PageSize: number;
-  OrderBy?: string;
-  Direction?: string;
-  Search?: string;
+  page: number;
+  sort_by?: string;
 }
 
 export const fetchPopularMovies =

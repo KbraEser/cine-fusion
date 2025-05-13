@@ -1,166 +1,40 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
-import { FaBars } from "react-icons/fa";
-import logo from "../assets/img/logo.png";
+import { Box, Typography } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState, AppDispatch } from "../store/store";
+import { useEffect } from "react";
+import { fetchPopularMovies } from "../store/actions/popularMoviesActions";
 
 export default function HomePage() {
-  const pages = ["Movies", "TV Shows", "About"];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const dispatch = useDispatch<AppDispatch>();
+  const popularMovies = useSelector((state: RootState) => state.popularMovies);
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  useEffect(() => {
+    dispatch(
+      fetchPopularMovies({
+        page: 1,
+      })
+    );
+  }, []);
 
-  const handleOpenNavMenu = (e: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(e.currentTarget);
-  };
-  const handleOpenUserMenu = (e: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(e.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  console.log("Popular Movies State:", popularMovies);
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
-      <Container maxWidth={false}>
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex", alignItems: "center", gap: 2 },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".2rem",
-              color: "black",
-              textDecoration: "none",
-            }}
-          >
-            {" "}
+    <Box sx={{ mt: 4, p: 2 }}>
+      <Typography variant="h4" sx={{ textAlign: "center", mb: 2 }}>
+        {popularMovies.results.map((movie) => (
+          <Box key={movie.id}>
             <img
-              src={logo}
-              alt="logo"
-              style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+              alt={movie.title}
             />
-            CineFusion
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-            >
-              <FaBars />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            <Typography>{movie.title}</Typography>
+            <Typography>{movie.overview}</Typography>
+            {movie.video && (
+              <Typography>Video: {movie.video ? "Evet" : "Hayır"}</Typography>
+            )}
           </Box>
-
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "black",
-              textDecoration: "none",
-            }}
-          >
-            CineFusion
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+        ))}
+      </Typography>
+    </Box>
   );
 }

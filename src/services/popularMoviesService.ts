@@ -1,25 +1,26 @@
 import { api } from "../lib/interceptor";
 
 interface GetCategoryWithFilterDTO {
-  PageNumber: number;
-  PageSize: number;
-  OrderBy?: string;
-  Direction?: string;
-  Search?: string;
+  page: number;
+  sort_by?: string;
+  language?: string;
 }
 
 export const fetchPopularMovies = async (params: GetCategoryWithFilterDTO) => {
   try {
-    const response = await api.get(
-      "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc",
-      {
-        params,
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
-          accept: "application/json",
-        },
-      }
-    );
+    const response = await api.get("/discover/movie", {
+      params: {
+        include_adult: false,
+        include_video: true,
+        language: params.language ?? "en-US",
+        page: params.page,
+        sort_by: params.sort_by ?? "popularity.desc",
+      },
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+        accept: "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching popular movies:", error);
