@@ -6,11 +6,7 @@ import {
   fetchPopularMoviesFailure,
 } from "../reducers/popularMoviesReducer";
 import { toast } from "react-toastify";
-
-interface GetCategoryWithFilterDTO {
-  page: number;
-  sort_by?: string;
-}
+import type { GetCategoryWithFilterDTO } from "../../services/popularMoviesService";
 
 export const fetchPopularMovies =
   (params: GetCategoryWithFilterDTO) => async (dispatch: AppDispatch) => {
