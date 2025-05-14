@@ -1,6 +1,6 @@
 import { api } from "../lib/interceptor";
 
-interface GetCategoryWithFilterDTO {
+export interface GetCategoryWithFilterDTO {
   page: number;
   sort_by?: string;
   language?: string;

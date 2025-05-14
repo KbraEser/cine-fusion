@@ -7,14 +7,16 @@ import { fetchPopularMovies } from "../store/actions/popularMoviesActions";
 export default function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
   const popularMovies = useSelector((state: RootState) => state.popularMovies);
+  const { language } = useSelector((state: RootState) => state.language);
 
   useEffect(() => {
     dispatch(
       fetchPopularMovies({
         page: 1,
+        language,
       })
     );
-  }, []);
+  }, [language, dispatch]);
 
   console.log("Popular Movies State:", popularMovies);
 
