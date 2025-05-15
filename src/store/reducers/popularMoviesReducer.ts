@@ -45,7 +45,7 @@ const popularMoviesSlice = createSlice({
     },
     fetchPopularMoviesSuccess: (state, action) => {
       state.loading = false;
-      state.results = action.payload.results;
+      state.results = [...state.results, ...action.payload.results];
       state.total_pages = action.payload.total_pages;
       state.total_results = action.payload.total_results;
     },

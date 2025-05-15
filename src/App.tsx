@@ -1,14 +1,8 @@
 import "./App.css";
-import HomePage from "./pages/HomePage";
-import Navbar from "./components/Navbar";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  return (
-    <>
-      <Navbar />
-      <HomePage />
-    </>
-  );
+  return <Outlet />;
 }
 
 export default App;

@@ -13,12 +13,22 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
-import logo from "../assets/img/logo.png";
+import logo from "../../assets/img/logo.png";
 import LanguageToggle from "./LanguageToggle";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 export default function Navbar() {
-  const pages = ["Movies", "TV Shows", "About"];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const { language } = useSelector((state: RootState) => state.language);
+  const pages =
+    language === "tr-TR"
+      ? ["Filmler", "Diziler", "Hakkımızda"]
+      : ["Movies", "TV Shows", "About"];
+
+  const settings =
+    language === "tr-TR"
+      ? ["Profil", "Hesap", "Panele Git", "Çıkış Yap"]
+      : ["Profile", "Account", "Dashboard", "Logout"];
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
