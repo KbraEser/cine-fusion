@@ -1,0 +1,69 @@
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import { fetchPopularMovies } from "../store/actions/popularMoviesActions";
+import { useEffect } from "react";
+import { Box } from "@mui/material";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "../style/swiper.scss";
+
+import "swiper/css";
+import "swiper/css/effect-fade";
+import { Autoplay, EffectCoverflow } from "swiper/modules";
+
+const HeroSlider = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const popularMovies = useSelector((state: RootState) => state.popularMovies);
+  const { language } = useSelector((state: RootState) => state.language);
+
+  useEffect(() => {
+    const fethPages = async () => {
+      for (let i = 1; i <= 5; i++) {
+        dispatch(
+          fetchPopularMovies({
+            page: i,
+            language,
+          })
+        );
+      }
+    };
+  }, [language, dispatch]);
+
+  console.log("Popular Movies State:", popularMovies);
+
+  return (
+    <Box className="slider-wrapper">
+      <Swiper
+        effect="coverflow"
+        grabCursor={true}
+        centeredSlides={true}
+        slidesPerView="auto"
+        coverflowEffect={{
+          rotate: 0,
+          stretch: 0,
+          depth: 200,
+          modifier: 2.5,
+          slideShadows: true,
+        }}
+        autoplay={{
+          delay: 3500,
+          disableOnInteraction: false,
+        }}
+        modules={[EffectCoverflow, Autoplay]}
+        className="swiper-coverflow"
+      >
+        {popularMovies.results
+          .filter((movie) => movie.poster_path)
+          .map((movie) => (
+            <SwiperSlide key={movie.id}>
+              <img
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={movie.title}
+              />
+            </SwiperSlide>
+          ))}
+      </Swiper>
+    </Box>
+  );
+};
+
+export default HeroSlider;
