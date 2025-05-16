@@ -1,34 +1,30 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
-import { fetchPopularMovies } from "../store/actions/popularMoviesActions";
+import { fetchPopularMovies } from "../store/slices/popularMoviesSlice";
 import { useEffect } from "react";
 import { Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../style/swiper.scss";
+import { useNavigate } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
 
 const HeroSlider = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const popularMovies = useSelector((state: RootState) => state.popularMovies);
   const { language } = useSelector((state: RootState) => state.language);
 
   useEffect(() => {
-    const fethPages = async () => {
+    const fetchPages = async () => {
       for (let i = 1; i <= 5; i++) {
-        dispatch(
-          fetchPopularMovies({
-            page: i,
-            language,
-          })
-        );
+        await dispatch(fetchPopularMovies({ page: i, language }));
       }
     };
+    fetchPages();
   }, [language, dispatch]);
-
-  console.log("Popular Movies State:", popularMovies);
 
   return (
     <Box className="slider-wrapper">
@@ -56,6 +52,11 @@ const HeroSlider = () => {
           .map((movie) => (
             <SwiperSlide key={movie.id}>
               <img
+                onClick={() => {
+                  navigate(`/popular-movie-detail/${movie.id}`, {
+                    state: { movie },
+                  });
+                }}
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
               />
