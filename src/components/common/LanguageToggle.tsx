@@ -1,6 +1,6 @@
 import { Switch, FormControlLabel, Typography, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleLanguage } from "../../store/reducers/languageReducer";
+import { toggleLanguage } from "../../store/slices/languageSlice";
 import type { RootState } from "../../store/store";
 
 const LanguageToggle = () => {

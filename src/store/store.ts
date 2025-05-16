@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import popularMoviesReducer from "./reducers/popularMoviesReducer";
-import languageReducer from "./reducers/languageReducer";
+import popularMoviesReducer from "./slices/popularMoviesSlice";
+import languageReducer from "./slices/languageSlice";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     popularMovies: popularMoviesReducer,
     language: languageReducer,
@@ -11,5 +11,3 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-export default store;
