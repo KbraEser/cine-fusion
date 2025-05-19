@@ -67,7 +67,6 @@ const popularMoviesSlice = createSlice({
       })
       .addCase(fetchPopularMovies.fulfilled, (state, action) => {
         state.loading = false;
-        // Duplicate film ID'lerini önlemek için Set kullan
         const existingIds = new Set(
           state.results.map((movie: Movie) => movie.id)
         );

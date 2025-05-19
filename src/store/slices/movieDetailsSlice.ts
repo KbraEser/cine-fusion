@@ -1,28 +1,60 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import * as movieDetailsService from "../../services/movieDetailsService";
+import { toast } from "react-toastify";
+
+interface Movie {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  loading: boolean;
+  error: string | null;
+}
 
 interface MovieDetailsState {
-  id: number;
-  title: string;
-  overview: string;
-  poster_path: string;
-  backdrop_path: string;
-  release_date: string;
-  vote_average: number;
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: MovieDetailsState = {
-  id: 0,
-  title: "",
-  overview: "",
-  poster_path: "",
-  backdrop_path: "",
-  release_date: "",
-  vote_average: 0,
+  page: 1,
+  results: [],
+  total_pages: 0,
+  total_results: 0,
   loading: false,
   error: null,
 };
+
+export const fetchMovieDetails = createAsyncThunk(
+  "movieDetails/fetchMovieDetails",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await movieDetailsService.fetchMovieDetails(id);
+      return response;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Film detayları yüklenirken bir hata oluştu";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
 
 const movieDetailsSlice = createSlice({
   name: "movieDetails",
@@ -36,7 +68,9 @@ const movieDetailsSlice = createSlice({
       })
       .addCase(fetchMovieDetails.fulfilled, (state, action) => {
         state.loading = false;
-        return { ...state, ...action.payload };
+        state.results = [action.payload];
+        state.total_pages = action.payload.total_pages;
+        state.total_results = action.payload.total_results;
       })
       .addCase(fetchMovieDetails.rejected, (state, action) => {
         state.loading = false;
