@@ -17,8 +17,10 @@ import logo from "../../assets/img/logo.png";
 import LanguageToggle from "./LanguageToggle";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const { language } = useSelector((state: RootState) => state.language);
   const pages =
     language === "tr-TR"
@@ -49,17 +51,18 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
+    <AppBar position="static" sx={{ backgroundColor: "transparent", p: 2 }}>
       <Container maxWidth={false}>
         <Toolbar disableGutters>
           <Typography
+            onClick={() => navigate("/")}
             variant="h6"
             noWrap
             component="a"
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex", alignItems: "center", gap: 2 },
+              display: { xs: "none", md: "flex", alignItems: "center", gap: 4 },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".2rem",
@@ -111,6 +114,7 @@ export default function Navbar() {
           </Box>
 
           <Typography
+            onClick={() => navigate("/")}
             variant="h5"
             noWrap
             component="a"
