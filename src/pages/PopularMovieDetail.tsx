@@ -1,37 +1,83 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography, Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { AppDispatch, RootState } from "../store/store";
-import { fetchMovieDetails } from "../store/slices/movieDetailsSlice";
+import {
+  fetchCast,
+  fetchMovieDetails,
+} from "../store/slices/movieDetailsSlice";
 import { useEffect } from "react";
 import "../style/popularMoviesDetail.scss";
 
 const PopularMovieDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { results } = useSelector((state: RootState) => state.movieDetails);
+  const { results, cast } = useSelector(
+    (state: RootState) => state.movieDetails
+  );
 
   useEffect(() => {
+    console.log(id?.toString());
     dispatch(fetchMovieDetails(Number(id)));
-  }, [id]);
+    dispatch(fetchCast(id?.toString() || ""));
+    console.log(cast);
+  }, []);
 
   const movie = results.find((movie) => movie.id === Number(id));
 
   return (
-    <Box className="movie-detail-container">
-      <Box
-        className="background"
-        style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie?.poster_path})`,
-        }}
-      >
+    <Box
+      className="background"
+      style={{
+        backgroundImage: `url(https://image.tmdb.org/t/p/original${movie?.backdrop_path})`,
+      }}
+    >
+      <Box className="movie-detail-container">
         <Box className="overlay">
-          <Typography variant="h3" className="title">
-            {movie?.title}
+          <Typography className="title">{movie?.title}</Typography>
+          <Typography className="tagline">{movie?.tagline}</Typography>
+
+          <Typography variant="body1">
+            IMDb Rating: {movie?.vote_average?.toFixed(1) ?? "N/A"}+ | Duration:{" "}
+            {movie?.runtime
+              ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m`
+              : "N/A"}
           </Typography>
+          <Divider
+            sx={{ my: 2, backgroundColor: "rgba(255, 255, 255, 0.5)" }}
+          />
+          <Typography variant="body1">
+            {movie?.genres.map((genre) => genre.name).join(" - ")} | Release
+            Date: {movie?.release_date}
+          </Typography>
+          <Divider
+            sx={{ my: 2, backgroundColor: "rgba(255, 255, 255, 0.5)" }}
+          />
           <Typography variant="body1" className="overview">
+            <Typography component="span" sx={{ fontWeight: "bold", mr: 1 }}>
+              Overview:
+            </Typography>
             {movie?.overview}
           </Typography>
+
+          <Typography component="span" sx={{ fontWeight: "bold", mr: 1 }}>
+            Cast:
+          </Typography>
+          <Box className="cast-section-grid">
+            {cast.length > 0 &&
+              cast.slice(0, 6).map((actor) => (
+                <Box key={actor.id} className="cast-section-card">
+                  <img
+                    className="cast-section-card-image"
+                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                    alt={actor.name}
+                  />
+                  <Typography className="cast-section-card-name">
+                    {actor.character}
+                  </Typography>
+                </Box>
+              ))}
+          </Box>
         </Box>
       </Box>
     </Box>
