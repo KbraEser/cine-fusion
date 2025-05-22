@@ -14,3 +14,17 @@ export const fetchMovieDetails = async (id: number) => {
     throw error;
   }
 };
+export const fetchCast = async (movieId: string) => {
+  try {
+    const response = await api.get(`/movie/${movieId}/credits`, {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+        accept: "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cast:", error);
+    throw error;
+  }
+};

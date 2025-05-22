@@ -4,20 +4,10 @@ import { toast } from "react-toastify";
 import type { GetCategoryWithFilterDTO } from "../../services/popularMoviesService";
 
 interface Movie {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
+  genres: { id: number; name: string }[];
   id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
   poster_path: string;
-  release_date: string;
   title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
 }
 
 interface PopularMoviesState {
@@ -34,8 +24,8 @@ const initialState: PopularMoviesState = {
   results: [],
   total_pages: 0,
   total_results: 0,
-  error: null,
   loading: false,
+  error: null,
 };
 
 export const fetchPopularMovies = createAsyncThunk(

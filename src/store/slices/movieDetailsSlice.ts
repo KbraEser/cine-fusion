@@ -3,22 +3,17 @@ import * as movieDetailsService from "../../services/movieDetailsService";
 import { toast } from "react-toastify";
 
 interface Movie {
-  adult: boolean;
   backdrop_path: string;
-  genre_ids: number[];
+  genres: { id: number; name: string }[];
   id: number;
-  original_language: string;
-  original_title: string;
   overview: string;
-  popularity: number;
-  poster_path: string;
   release_date: string;
   title: string;
-  video: boolean;
   vote_average: number;
-  vote_count: number;
   loading: boolean;
   error: string | null;
+  runtime: number;
+  tagline: string;
 }
 
 interface MovieDetailsState {
@@ -28,6 +23,7 @@ interface MovieDetailsState {
   total_results: number;
   loading: boolean;
   error: string | null;
+  cast: { id: number; name: string; character: string; profile_path: string }[];
 }
 
 const initialState: MovieDetailsState = {
@@ -37,6 +33,7 @@ const initialState: MovieDetailsState = {
   total_results: 0,
   loading: false,
   error: null,
+  cast: [],
 };
 
 export const fetchMovieDetails = createAsyncThunk(
@@ -50,6 +47,23 @@ export const fetchMovieDetails = createAsyncThunk(
         error instanceof Error
           ? error.message
           : "Film detayları yüklenirken bir hata oluştu";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+export const fetchCast = createAsyncThunk(
+  "popularMovies/fetchCast",
+  async (movieId: string, { rejectWithValue }) => {
+    try {
+      const response = await movieDetailsService.fetchCast(movieId);
+
+      return response;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Cast yüklenirken bir hata oluştu";
       toast.error(errorMessage);
       return rejectWithValue(errorMessage);
     }
@@ -69,12 +83,23 @@ const movieDetailsSlice = createSlice({
       .addCase(fetchMovieDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.results = [action.payload];
-        state.total_pages = action.payload.total_pages;
-        state.total_results = action.payload.total_results;
       })
       .addCase(fetchMovieDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Bir hata oluştu";
+      })
+      .addCase(fetchCast.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCast.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cast = action.payload.cast;
+        console.log(action.payload);
+      })
+      .addCase(fetchCast.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Bir hata oluştu";
       });
   },
 });

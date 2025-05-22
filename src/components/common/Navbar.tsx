@@ -51,7 +51,15 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "transparent", p: 2 }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        backgroundColor: "transparent",
+        p: 2,
+        zIndex: 100,
+        backdropFilter: "blur(10px)",
+      }}
+    >
       <Container maxWidth={false}>
         <Toolbar disableGutters>
           <Typography
