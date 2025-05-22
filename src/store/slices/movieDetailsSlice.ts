@@ -7,6 +7,7 @@ interface Movie {
   genres: { id: number; name: string }[];
   id: number;
   overview: string;
+  poster_path: string;
   release_date: string;
   title: string;
   vote_average: number;
@@ -24,6 +25,7 @@ interface MovieDetailsState {
   loading: boolean;
   error: string | null;
   cast: { id: number; name: string; character: string; profile_path: string }[];
+  video: string | null;
 }
 
 const initialState: MovieDetailsState = {
@@ -34,6 +36,7 @@ const initialState: MovieDetailsState = {
   loading: false,
   error: null,
   cast: [],
+  video: null,
 };
 
 export const fetchMovieDetails = createAsyncThunk(
@@ -70,6 +73,23 @@ export const fetchCast = createAsyncThunk(
   }
 );
 
+export const fetchVideo = createAsyncThunk(
+  "movieDetails/fetchVideo",
+  async (movieId: string, { rejectWithValue }) => {
+    try {
+      const response = await movieDetailsService.fetchVideo(movieId);
+      return response;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Video yüklenirken bir hata oluştu";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const movieDetailsSlice = createSlice({
   name: "movieDetails",
   initialState,
@@ -98,6 +118,18 @@ const movieDetailsSlice = createSlice({
         console.log(action.payload);
       })
       .addCase(fetchCast.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Bir hata oluştu";
+      })
+      .addCase(fetchVideo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchVideo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.video = action.payload.results[1];
+      })
+      .addCase(fetchVideo.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "Bir hata oluştu";
       });
