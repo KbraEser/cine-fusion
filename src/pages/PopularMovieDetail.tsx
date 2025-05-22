@@ -1,4 +1,14 @@
-import { Box, Stack, Typography, Divider } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  CardMedia,
+  Card,
+  CardActionArea,
+  CardActions,
+  Button,
+  CardContent,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { AppDispatch, RootState } from "../store/store";
@@ -57,7 +67,12 @@ const PopularMovieDetail = () => {
             <Typography component="span" sx={{ fontWeight: "bold", mr: 1 }}>
               Overview:
             </Typography>
-            {movie?.overview}
+            {movie?.overview ? (
+              <>
+                {movie.overview.split(".").slice(0, 2).join(".")}
+                {"."}
+              </>
+            ) : null}
           </Typography>
 
           <Typography component="span" sx={{ fontWeight: "bold", mr: 1 }}>
@@ -69,7 +84,11 @@ const PopularMovieDetail = () => {
                 <Box key={actor.id} className="cast-section-card">
                   <img
                     className="cast-section-card-image"
-                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                    src={
+                      actor.profile_path
+                        ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                        : "/assets/img/avatar.png"
+                    }
                     alt={actor.name}
                   />
                   <Typography className="cast-section-card-name">
@@ -78,6 +97,21 @@ const PopularMovieDetail = () => {
                 </Box>
               ))}
           </Box>
+        </Box>
+        <Box className="video-section">
+          <Card
+            className="video-section-card"
+            style={{
+              backgroundImage: `url(https://image.tmdb.org/t/p/original${movie?.poster_path})`,
+            }}
+          >
+            <CardContent></CardContent>
+            <CardActions>
+              <Button size="small" variant="contained" color="success">
+                Fragmanı İzle
+              </Button>
+            </CardActions>
+          </Card>
         </Box>
       </Box>
     </Box>
