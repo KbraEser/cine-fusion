@@ -1,3 +1,5 @@
+@import "./theme";
+
 .background {
   width: 100%;
   height: 100%;
@@ -16,17 +18,17 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: $background-overlay;
   }
 }
+
 .movie-detail-container {
   width: 100%;
   height: calc(100vh - 100.5px);
-
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
-  padding: 0 2rem;
+  padding: 0 3rem;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
@@ -36,29 +38,41 @@
 
   .overlay {
     position: relative;
-    color: white;
+    color: $text-primary;
     display: flex;
     flex-direction: column;
     justify-content: left;
-    padding: 10px 40px;
+    padding: 10px 0;
     margin-top: 100.5px;
-    width: 65%;
+    width: 70%;
+
+    @media (max-width: 1024px) {
+      width: 100%;
+    }
+
+    .divider {
+      background-color: $light-gray;
+      margin: 10px 0;
+    }
 
     .title {
-      font-size: 2.5rem;
+      font-size: $font-size-title;
+      color: $text-primary;
     }
+
     .tagline {
-      font-size: 1rem;
+      font-size: $font-size-sm;
       font-family: "Italic";
       font-weight: 600;
       margin-bottom: 10px;
+      color: $text-primary;
     }
 
     .overview {
-      font-size: 1rem;
+      font-size: $font-size-md;
       line-height: 1.6;
       max-width: 800px;
-      margin-bottom: 10px;
+      color: $text-primary;
     }
 
     .cast-section {
@@ -80,7 +94,7 @@
           object-fit: cover;
         }
         &-name {
-          font-size: 0.8rem;
+          font-size: $font-size-sm;
           font-weight: 500;
         }
       }
@@ -93,22 +107,43 @@
     display: flex;
     justify-content: center;
 
+    @media (max-width: 1024px) {
+      margin-top: 50px;
+    }
+
     &-card {
       width: 300px;
-      min-height: 450px;
+      height: 450px;
       background-size: cover;
       background-position: center;
-      border-radius: 16px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-      position: relative;
+      border-radius: $border-radius-md;
+      box-shadow: $box-shadow-primary;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      @media (max-width: 1024px) {
+        height: 400px;
+      }
+
+      @media (max-width: 768px) {
+        height: 350px;
+      }
 
       .MuiCardActions-root {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
         padding: 15px;
         display: flex;
         justify-content: center;
+        background: $gradient-dark;
+      }
+
+      &-button {
+        background-color: $button-primary;
+        color: $button-text;
+
+        &:hover {
+          background-color: $button-hover;
+        }
       }
     }
   }

@@ -74,11 +74,14 @@ export default function Navbar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".2rem",
-              color: "black",
+              color: "#ff4a4a",
               textDecoration: "none",
+              cursor: "pointer",
+              "&:hover": {
+                color: "#ff4a4a",
+              },
             }}
           >
-            {" "}
             <img
               src={logo}
               alt="logo"
@@ -94,6 +97,7 @@ export default function Navbar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
+              sx={{ color: "#e08181" }}
             >
               <FaBars />
             </IconButton>
@@ -111,11 +115,18 @@ export default function Navbar() {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
+              sx={{
+                display: { xs: "block", md: "none" },
+                "& .MuiPaper-root": {
+                  backgroundColor: "rgba(0, 0, 0, 0.9)",
+                },
+              }}
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                  <Typography sx={{ color: "#8E1616", textAlign: "center" }}>
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -134,8 +145,12 @@ export default function Navbar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "black",
+              color: "#ff4a4a",
               textDecoration: "none",
+              cursor: "pointer",
+              "&:hover": {
+                color: "#D84040",
+              },
             }}
           >
             CineFusion
@@ -145,7 +160,14 @@ export default function Navbar() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "#ff4a4a",
+                  display: "block",
+                  "&:hover": {
+                    color: "#D84040",
+                  },
+                }}
               >
                 {page}
               </Button>
@@ -159,7 +181,12 @@ export default function Navbar() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{
+                mt: "45px",
+                "& .MuiPaper-root": {
+                  backgroundColor: "rgba(0, 0, 0, 0.9)",
+                },
+              }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -176,7 +203,7 @@ export default function Navbar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
+                  <Typography sx={{ color: "#ff4a4a", textAlign: "center" }}>
                     {setting}
                   </Typography>
                 </MenuItem>

@@ -2,9 +2,7 @@ import {
   Box,
   Typography,
   Divider,
-  CardMedia,
   Card,
-  CardActionArea,
   CardActions,
   Button,
   CardContent,
@@ -15,6 +13,7 @@ import type { AppDispatch, RootState } from "../store/store";
 import {
   fetchCast,
   fetchMovieDetails,
+  fetchVideo,
 } from "../store/slices/movieDetailsSlice";
 import { useEffect } from "react";
 import "../style/popularMoviesDetail.scss";
@@ -22,16 +21,18 @@ import "../style/popularMoviesDetail.scss";
 const PopularMovieDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { results, cast } = useSelector(
+  const { results, cast, video } = useSelector(
     (state: RootState) => state.movieDetails
   );
+  const { language } = useSelector((state: RootState) => state.language);
 
   useEffect(() => {
-    console.log(id?.toString());
-    dispatch(fetchMovieDetails(Number(id)));
-    dispatch(fetchCast(id?.toString() || ""));
-    console.log(cast);
-  }, []);
+    if (id) {
+      dispatch(fetchMovieDetails(Number(id)));
+      dispatch(fetchCast(id.toString()));
+      dispatch(fetchVideo(id.toString()));
+    }
+  }, [id, language, dispatch]);
 
   const movie = results.find((movie) => movie.id === Number(id));
 
@@ -53,16 +54,13 @@ const PopularMovieDetail = () => {
               ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m`
               : "N/A"}
           </Typography>
-          <Divider
-            sx={{ my: 2, backgroundColor: "rgba(255, 255, 255, 0.5)" }}
-          />
+          <Divider className="divider" />
           <Typography variant="body1">
             {movie?.genres.map((genre) => genre.name).join(" - ")} | Release
             Date: {movie?.release_date}
           </Typography>
-          <Divider
-            sx={{ my: 2, backgroundColor: "rgba(255, 255, 255, 0.5)" }}
-          />
+          <Divider className="divider" />
+
           <Typography variant="body1" className="overview">
             <Typography component="span" sx={{ fontWeight: "bold", mr: 1 }}>
               Overview:
@@ -107,8 +105,19 @@ const PopularMovieDetail = () => {
           >
             <CardContent></CardContent>
             <CardActions>
-              <Button size="small" variant="contained" color="success">
-                Fragmanı İzle
+              <Button
+                className="video-section-card-button"
+                size="small"
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  window.open(
+                    `https://www.youtube.com/watch?v=${video}`,
+                    "_blank"
+                  );
+                }}
+              >
+                Watch Trailer
               </Button>
             </CardActions>
           </Card>

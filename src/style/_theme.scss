@@ -1,0 +1,43 @@
+// Renk Paleti
+$dark-primary: #1d1616;
+$red-dark: #8e1616;
+$red-light: #ff4a4a;
+$light-gray: #eeeeee;
+
+// Metin Renkleri
+$text-primary: $light-gray;
+
+$text-muted: rgba($light-gray, 0.6);
+
+// Metin Boyutları
+$font-size-sm: 12px;
+$font-size-md: 16px;
+$font-size-lg: 20px;
+$font-size-title: 40px;
+
+// Arka Plan Renkleri
+$background-primary: $dark-primary;
+$background-secondary: lighten($dark-primary, 5%);
+$background-overlay: rgba($dark-primary, 0.7);
+
+// Aksiyon Renkleri
+$button-primary: $red-light;
+$button-hover: $red-dark;
+$button-text: $light-gray;
+
+// Gölge Efektleri
+$box-shadow-primary: 0 8px 16px rgba($dark-primary, 0.5);
+$box-shadow-light: 0 4px 8px rgba($dark-primary, 0.3);
+
+// Gradient'ler
+$gradient-dark: linear-gradient(to top, rgba($dark-primary, 0.7), transparent);
+$gradient-overlay: linear-gradient(
+  to top,
+  rgba($dark-primary, 0.8),
+  rgba($dark-primary, 0.4)
+);
+
+// Border Radius
+$border-radius-sm: 8px;
+$border-radius-md: 16px;
+$border-radius-lg: 24px;
