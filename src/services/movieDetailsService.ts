@@ -37,7 +37,20 @@ export const fetchVideo = async (movieId: string) => {
         accept: "application/json",
       },
     });
-    return response.data;
+    console.log(response.data);
+    const videos = response.data.results;
+
+    const trailer =
+      videos.find(
+        (v: { type: string; site: string; official: boolean }) =>
+          v.type === "Trailer" && v.site === "YouTube" && v.official === true
+      ) ||
+      videos.find(
+        (v: { type: string; site: string }) =>
+          v.type === "Trailer" && v.site === "YouTube"
+      );
+
+    return trailer?.key;
   } catch (error) {
     console.error("Error fetching video:", error);
     throw error;

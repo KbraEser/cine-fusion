@@ -115,7 +115,6 @@ const movieDetailsSlice = createSlice({
       .addCase(fetchCast.fulfilled, (state, action) => {
         state.loading = false;
         state.cast = action.payload.cast;
-        console.log(action.payload);
       })
       .addCase(fetchCast.rejected, (state, action) => {
         state.loading = false;
@@ -127,7 +126,7 @@ const movieDetailsSlice = createSlice({
       })
       .addCase(fetchVideo.fulfilled, (state, action) => {
         state.loading = false;
-        state.video = action.payload.results[1].key;
+        state.video = action.payload;
       })
       .addCase(fetchVideo.rejected, (state, action) => {
         state.loading = false;

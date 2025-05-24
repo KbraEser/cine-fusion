@@ -119,7 +119,14 @@ const PopularMovieDetail = () => {
                 p: 0,
               }}
             >
-              <DialogContent>
+              <DialogContent
+                sx={{
+                  padding: 0,
+                  "&:first-of-type": {
+                    paddingTop: 0,
+                  },
+                }}
+              >
                 <Box
                   sx={{
                     position: "relative",
