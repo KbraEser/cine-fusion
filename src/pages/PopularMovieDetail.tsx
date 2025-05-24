@@ -3,9 +3,11 @@ import {
   Typography,
   Divider,
   Card,
-  CardActions,
   Button,
-  CardContent,
+  Dialog,
+  DialogTitle,
+  IconButton,
+  DialogContent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -15,8 +17,9 @@ import {
   fetchMovieDetails,
   fetchVideo,
 } from "../store/slices/movieDetailsSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../style/popularMoviesDetail.scss";
+import CloseIcon from "@mui/icons-material/Close";
 
 const PopularMovieDetail = () => {
   const { id } = useParams();
@@ -35,6 +38,10 @@ const PopularMovieDetail = () => {
   }, [id, language, dispatch]);
 
   const movie = results.find((movie) => movie.id === Number(id));
+
+  const [openTrailer, setOpenTrailer] = useState(false);
+  const handleOpen = () => setOpenTrailer(true);
+  const handleClose = () => setOpenTrailer(false);
 
   return (
     <Box
@@ -103,23 +110,42 @@ const PopularMovieDetail = () => {
               backgroundImage: `url(https://image.tmdb.org/t/p/original${movie?.poster_path})`,
             }}
           >
-            <CardContent></CardContent>
-            <CardActions>
-              <Button
-                className="video-section-card-button"
-                size="small"
-                variant="contained"
-                color="success"
-                onClick={() => {
-                  window.open(
-                    `https://www.youtube.com/watch?v=${video}`,
-                    "_blank"
-                  );
-                }}
-              >
-                Watch Trailer
-              </Button>
-            </CardActions>
+            <Dialog
+              open={openTrailer}
+              onClose={handleClose}
+              maxWidth="md"
+              fullWidth
+              sx={{
+                p: 0,
+              }}
+            >
+              <DialogContent>
+                <Box
+                  sx={{
+                    position: "relative",
+                    paddingTop: "56.25%", // 16:9 aspect ratio
+                    width: "100%",
+                  }}
+                >
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video}`}
+                    style={{
+                      border: "none",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </Box>
+              </DialogContent>
+            </Dialog>
+            <Button className="video-section-card-button" onClick={handleOpen}>
+              Watch Trailer
+            </Button>
           </Card>
         </Box>
       </Box>
