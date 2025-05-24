@@ -1,7 +1,17 @@
 import axios from "axios";
+import { store } from "../../store/store";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+});
+
+api.interceptors.request.use((config) => {
+  const state = store.getState();
+  config.params = {
+    ...config.params,
+    language: state.language.language,
+  };
+  return config;
 });
 
 api.interceptors.response.use(

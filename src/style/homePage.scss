@@ -1,0 +1,10 @@
+@import "./theme";
+
+body {
+  background-color: $background-primary;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 0;
+}

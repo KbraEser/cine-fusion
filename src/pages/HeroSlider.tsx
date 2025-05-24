@@ -15,16 +15,15 @@ const HeroSlider = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const popularMovies = useSelector((state: RootState) => state.popularMovies);
-  const { language } = useSelector((state: RootState) => state.language);
 
   useEffect(() => {
     const fetchPages = async () => {
       for (let i = 1; i <= 5; i++) {
-        await dispatch(fetchPopularMovies({ page: i, language }));
+        await dispatch(fetchPopularMovies({ page: i }));
       }
     };
     fetchPages();
-  }, [language, dispatch]);
+  }, [dispatch]);
 
   return (
     <Box className="slider-wrapper">

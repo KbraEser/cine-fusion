@@ -2,12 +2,12 @@ import {
   Box,
   Typography,
   Divider,
-  CardMedia,
   Card,
-  CardActionArea,
-  CardActions,
   Button,
-  CardContent,
+  Dialog,
+  DialogTitle,
+  IconButton,
+  DialogContent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -15,25 +15,33 @@ import type { AppDispatch, RootState } from "../store/store";
 import {
   fetchCast,
   fetchMovieDetails,
+  fetchVideo,
 } from "../store/slices/movieDetailsSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../style/popularMoviesDetail.scss";
+import CloseIcon from "@mui/icons-material/Close";
 
 const PopularMovieDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { results, cast } = useSelector(
+  const { results, cast, video } = useSelector(
     (state: RootState) => state.movieDetails
   );
+  const { language } = useSelector((state: RootState) => state.language);
 
   useEffect(() => {
-    console.log(id?.toString());
-    dispatch(fetchMovieDetails(Number(id)));
-    dispatch(fetchCast(id?.toString() || ""));
-    console.log(cast);
-  }, []);
+    if (id) {
+      dispatch(fetchMovieDetails(Number(id)));
+      dispatch(fetchCast(id.toString()));
+      dispatch(fetchVideo(id.toString()));
+    }
+  }, [id, language, dispatch]);
 
   const movie = results.find((movie) => movie.id === Number(id));
+
+  const [openTrailer, setOpenTrailer] = useState(false);
+  const handleOpen = () => setOpenTrailer(true);
+  const handleClose = () => setOpenTrailer(false);
 
   return (
     <Box
@@ -53,16 +61,13 @@ const PopularMovieDetail = () => {
               ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m`
               : "N/A"}
           </Typography>
-          <Divider
-            sx={{ my: 2, backgroundColor: "rgba(255, 255, 255, 0.5)" }}
-          />
+          <Divider className="divider" />
           <Typography variant="body1">
             {movie?.genres.map((genre) => genre.name).join(" - ")} | Release
             Date: {movie?.release_date}
           </Typography>
-          <Divider
-            sx={{ my: 2, backgroundColor: "rgba(255, 255, 255, 0.5)" }}
-          />
+          <Divider className="divider" />
+
           <Typography variant="body1" className="overview">
             <Typography component="span" sx={{ fontWeight: "bold", mr: 1 }}>
               Overview:
@@ -105,12 +110,42 @@ const PopularMovieDetail = () => {
               backgroundImage: `url(https://image.tmdb.org/t/p/original${movie?.poster_path})`,
             }}
           >
-            <CardContent></CardContent>
-            <CardActions>
-              <Button size="small" variant="contained" color="success">
-                Fragmanı İzle
-              </Button>
-            </CardActions>
+            <Dialog
+              open={openTrailer}
+              onClose={handleClose}
+              maxWidth="md"
+              fullWidth
+              sx={{
+                p: 0,
+              }}
+            >
+              <DialogContent>
+                <Box
+                  sx={{
+                    position: "relative",
+                    paddingTop: "56.25%", // 16:9 aspect ratio
+                    width: "100%",
+                  }}
+                >
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video}`}
+                    style={{
+                      border: "none",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </Box>
+              </DialogContent>
+            </Dialog>
+            <Button className="video-section-card-button" onClick={handleOpen}>
+              Watch Trailer
+            </Button>
           </Card>
         </Box>
       </Box>
