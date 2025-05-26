@@ -13,7 +13,7 @@ export const fetchFavoriteComedyMovies = async (
     const response = await api.get("/discover/movie", {
       params: {
         include_adult: false,
-        include_video: true,
+        include_video: false,
         language: params.language ?? "en-US",
         page: params.page,
         sort_by: params.sort_by ?? "popularity.desc",
@@ -24,6 +24,8 @@ export const fetchFavoriteComedyMovies = async (
         accept: "application/json",
       },
     });
+
+    console.log("API yanıtı:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching favorite comedy movies:", error);

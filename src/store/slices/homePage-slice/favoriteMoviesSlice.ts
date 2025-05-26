@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { GetFavoriteMoviesDTO } from "../../../services/favoriteMoviesService";
 import * as favoriteMoviesService from "../../../services/favoriteMoviesService";
 import { toast } from "react-toastify";
-import MovieDetail from "../../../pages/MovieDetail";
 
 interface Genre {
   id: number;
@@ -27,13 +26,14 @@ const initialState = {
   error: null as string | null,
 };
 
-const fetchFavoriteComedyMovies = createAsyncThunk(
+export const fetchFavoriteComedyMovies = createAsyncThunk(
   "favoriteMovies/fetchFavoriteComedyMovies",
   async (params: GetFavoriteMoviesDTO, { rejectWithValue }) => {
     try {
       const response = await favoriteMoviesService.fetchFavoriteComedyMovies(
         params
       );
+
       return response;
     } catch (error) {
       const errorMessage =
@@ -58,15 +58,16 @@ const favoriteMoviesSlice = createSlice({
       })
       .addCase(fetchFavoriteComedyMovies.fulfilled, (state, action) => {
         state.loading = false;
-        const comediesIds = new Set(
+        const existingIds = new Set(
           state.results.map((movie: FavoriteMovie) => movie.id)
         );
-        const newComedies = action.payload.results.filter(
-          (movie: FavoriteMovie) => !comediesIds.has(movie.id)
+        const newMovies = action.payload.results.filter(
+          (movie: FavoriteMovie) => !existingIds.has(movie.id)
         );
-        state.results = [...state.results, ...newComedies];
+        state.results = [...state.results, ...newMovies];
         state.total_pages = action.payload.total_pages;
         state.total_results = action.payload.total_results;
+        state.page = action.payload.page;
       })
       .addCase(fetchFavoriteComedyMovies.rejected, (state, action) => {
         state.loading = false;
