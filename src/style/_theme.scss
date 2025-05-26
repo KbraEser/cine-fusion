@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Renk Paleti
 $dark-primary: #1d1616;
 $red-dark: #8e1616;
@@ -17,7 +19,7 @@ $font-size-title: 40px;
 
 // Arka Plan Renkleri
 $background-primary: $dark-primary;
-$background-secondary: lighten($dark-primary, 5%);
+$background-secondary: color.adjust($dark-primary, $lightness: 5%);
 $background-overlay: rgba($dark-primary, 0.7);
 
 // Aksiyon Renkleri

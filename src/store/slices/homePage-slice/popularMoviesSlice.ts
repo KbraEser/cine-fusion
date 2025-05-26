@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import * as popularMoviesService from "../../services/popularMoviesService";
+import * as popularMoviesService from "../../../services/popularMoviesService";
 import { toast } from "react-toastify";
-import type { GetCategoryWithFilterDTO } from "../../services/popularMoviesService";
+import type { GetCategoryWithFilterDTO } from "../../../services/popularMoviesService";
 
 interface Movie {
   genres: { id: number; name: string }[];

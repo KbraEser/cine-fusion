@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import Topbar from "../layouts/main-layouts/topbar/index";
-import PopularMovieDetail from "../pages/PopularMovieDetail";
+import MovieDetail from "../pages/MovieDetail";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/popular-movie-detail/:id",
-        element: <PopularMovieDetail />,
+        path: "/movie-detail/:id",
+        element: <MovieDetail />,
       },
     ],
   },

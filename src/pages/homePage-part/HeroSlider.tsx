@@ -1,20 +1,32 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../store/store";
-import { fetchPopularMovies } from "../store/slices/popularMoviesSlice";
+import type { AppDispatch, RootState } from "../../store/store";
+import { fetchPopularMovies } from "../../store/slices/homePage-slice/popularMoviesSlice";
 import { useEffect } from "react";
 import { Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "../style/swiper.scss";
+import "../../style/swiper.scss";
 import { useNavigate } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
 
+interface Movie {
+  id: number;
+  title: string;
+  poster_path: string;
+}
+
+interface PopularMovies {
+  results: Movie[];
+}
+
 const HeroSlider = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const popularMovies = useSelector((state: RootState) => state.popularMovies);
+  const popularMovies = useSelector(
+    (state: RootState) => state.popularMovies
+  ) as PopularMovies;
 
   useEffect(() => {
     const fetchPages = async () => {
@@ -52,7 +64,7 @@ const HeroSlider = () => {
             <SwiperSlide key={movie.id}>
               <img
                 onClick={() => {
-                  navigate(`/popular-movie-detail/${movie.id}`, {
+                  navigate(`/movie-detail/${movie.id}`, {
                     state: { movie },
                   });
                 }}

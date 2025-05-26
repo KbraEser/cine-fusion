@@ -1,4 +1,5 @@
-import HeroSlider from "./HeroSlider";
+import HeroSlider from "../pages/homePage-part/HeroSlider";
+import Movies from "../pages/homePage-part/Movies";
 import "../style/homePage.scss";
 
 export default function HomePage() {
@@ -6,6 +7,7 @@ export default function HomePage() {
     <div className="home-page">
       <div className="content-wrapper">
         <HeroSlider />
+        <Movies />
       </div>
     </div>
   );

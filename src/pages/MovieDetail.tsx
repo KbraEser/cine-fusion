@@ -5,8 +5,6 @@ import {
   Card,
   Button,
   Dialog,
-  DialogTitle,
-  IconButton,
   DialogContent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,9 +17,8 @@ import {
 } from "../store/slices/movieDetailsSlice";
 import { useEffect, useState } from "react";
 import "../style/popularMoviesDetail.scss";
-import CloseIcon from "@mui/icons-material/Close";
 
-const PopularMovieDetail = () => {
+const MovieDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { results, cast, video } = useSelector(
@@ -160,4 +157,4 @@ const PopularMovieDetail = () => {
   );
 };
 
-export default PopularMovieDetail;
+export default MovieDetail;
