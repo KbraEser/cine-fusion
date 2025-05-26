@@ -37,7 +37,7 @@ export const fetchVideo = async (movieId: string) => {
         accept: "application/json",
       },
     });
-    console.log(response.data);
+
     const videos = response.data.results;
 
     const trailer =
