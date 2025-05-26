@@ -1,14 +1,13 @@
 import { api } from "../lib/interceptor";
 
-export interface GetFavoriteMoviesDTO {
+export interface GetMoviesByGenreDTO {
   page: number;
   sort_by?: string;
   language?: string;
+  genre?: number;
 }
 
-export const fetchFavoriteComedyMovies = async (
-  params: GetFavoriteMoviesDTO
-) => {
+export const fetchMoviesByGenre = async (params: GetMoviesByGenreDTO) => {
   try {
     const response = await api.get("/discover/movie", {
       params: {
@@ -17,7 +16,7 @@ export const fetchFavoriteComedyMovies = async (
         language: params.language ?? "en-US",
         page: params.page,
         sort_by: params.sort_by ?? "popularity.desc",
-        with_genres: 35,
+        with_genres: params.genre,
       },
       headers: {
         Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
