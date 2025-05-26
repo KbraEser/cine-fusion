@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { GetFavoriteMoviesDTO } from "../../../services/favoriteMoviesService";
+import type { GetMoviesByGenreDTO } from "../../../services/favoriteMoviesService";
 import * as favoriteMoviesService from "../../../services/favoriteMoviesService";
 import { toast } from "react-toastify";
 
@@ -28,11 +28,12 @@ const initialState = {
 
 export const fetchFavoriteComedyMovies = createAsyncThunk(
   "favoriteMovies/fetchFavoriteComedyMovies",
-  async (params: GetFavoriteMoviesDTO, { rejectWithValue }) => {
+  async (page: number, { rejectWithValue }) => {
     try {
-      const response = await favoriteMoviesService.fetchFavoriteComedyMovies(
-        params
-      );
+      const response = await favoriteMoviesService.fetchMoviesByGenre({
+        page: page,
+        genre: 35,
+      });
 
       return response;
     } catch (error) {
@@ -40,6 +41,26 @@ export const fetchFavoriteComedyMovies = createAsyncThunk(
         error instanceof Error
           ? error.message
           : "Favori filmler yüklenirken bir hata oluştu";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const fetchFavoriteActionMovies = createAsyncThunk(
+  "favoriteMovies/fetchFavoriteActionMovies",
+  async (page: number, { rejectWithValue }) => {
+    try {
+      const response = await favoriteMoviesService.fetchMoviesByGenre({
+        page: page,
+        genre: 28,
+      });
+      return response;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Favori macera filmleri yüklenirken bir hata oluştu";
       toast.error(errorMessage);
       return rejectWithValue(errorMessage);
     }

@@ -3,23 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
 import { useEffect } from "react";
 import { fetchFavoriteComedyMovies } from "../../store/slices/homePage-slice/favoriteMoviesSlice";
-import { useParams } from "react-router-dom";
-import { Navigation } from "swiper/modules";
+
+import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+
 import "../../style/movies.scss";
+import { useNavigate } from "react-router-dom";
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { id } = useParams();
 
   const { results, loading } = useSelector(
     (state: RootState) => state.favoriteComedyMovies
   );
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPages = async () => {
       for (let i = 1; i <= 7; i++) {
-        await dispatch(fetchFavoriteComedyMovies({ page: i }));
+        await dispatch(fetchFavoriteComedyMovies(i));
       }
     };
     fetchPages();
@@ -35,41 +35,30 @@ const Movies = () => {
           alignItems: "center",
           minHeight: "200px",
         }}
-      >
-        <Typography>Filmler yükleniyor...</Typography>
-      </Box>
+      ></Box>
     );
   }
 
   return (
     <Box className="movies-container">
+      <Typography className="movie-comedy-title" variant="h6">
+        Popular Comedy Movies
+      </Typography>
       <Swiper
-        modules={[Navigation]}
+        modules={[Autoplay, Navigation]}
         slidesPerView={6}
         navigation
         autoplay={{ delay: 13000 }}
         loop={true}
-        breakpoints={{
-          320: {
-            slidesPerView: 3,
-          },
-          480: {
-            slidesPerView: 4,
-          },
-          640: {
-            slidesPerView: 5,
-          },
-          960: {
-            slidesPerView: 6,
-          },
-          1280: {
-            slidesPerView: 7,
-          },
-        }}
       >
         {results.map((movie) => (
           <SwiperSlide key={movie.id}>
             <img
+              onClick={() =>
+                navigate(`/movie-detail/${movie.id}`, {
+                  state: { movie },
+                })
+              }
               className="movie-comedy-image"
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
               alt={movie.title}
