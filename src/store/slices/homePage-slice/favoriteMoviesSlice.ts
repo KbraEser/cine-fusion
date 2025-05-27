@@ -17,7 +17,16 @@ interface FavoriteMovie {
   with_genres: number;
 }
 
-const initialState = {
+const comedyInitialState = {
+  page: 1,
+  results: [] as FavoriteMovie[],
+  total_pages: 0,
+  total_results: 0,
+  loading: false,
+  error: null as string | null,
+};
+
+const actionInitialState = {
   page: 1,
   results: [] as FavoriteMovie[],
   total_pages: 0,
@@ -31,10 +40,9 @@ export const fetchFavoriteComedyMovies = createAsyncThunk(
   async (page: number, { rejectWithValue }) => {
     try {
       const response = await favoriteMoviesService.fetchMoviesByGenre({
-        page: page,
+        page,
         genre: 35,
       });
-
       return response;
     } catch (error) {
       const errorMessage =
@@ -52,7 +60,7 @@ export const fetchFavoriteActionMovies = createAsyncThunk(
   async (page: number, { rejectWithValue }) => {
     try {
       const response = await favoriteMoviesService.fetchMoviesByGenre({
-        page: page,
+        page,
         genre: 28,
       });
       return response;
@@ -67,9 +75,9 @@ export const fetchFavoriteActionMovies = createAsyncThunk(
   }
 );
 
-const favoriteMoviesSlice = createSlice({
-  name: "favoriteMovies",
-  initialState,
+const favoriteComedyMoviesSlice = createSlice({
+  name: "favoriteComedyMovies",
+  initialState: comedyInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -97,4 +105,35 @@ const favoriteMoviesSlice = createSlice({
   },
 });
 
-export default favoriteMoviesSlice.reducer;
+const favoriteActionMoviesSlice = createSlice({
+  name: "favoriteActionMovies",
+  initialState: actionInitialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchFavoriteActionMovies.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchFavoriteActionMovies.fulfilled, (state, action) => {
+        state.loading = false;
+        const existingIds = new Set(
+          state.results.map((movie: FavoriteMovie) => movie.id)
+        );
+        const newMovies = action.payload.results.filter(
+          (movie: FavoriteMovie) => !existingIds.has(movie.id)
+        );
+        state.results = [...state.results, ...newMovies];
+        state.total_pages = action.payload.total_pages;
+        state.total_results = action.payload.total_results;
+        state.page = action.payload.page;
+      })
+      .addCase(fetchFavoriteActionMovies.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Bir hata oluştu";
+      });
+  },
+});
+
+export const comedyReducer = favoriteComedyMoviesSlice.reducer;
+export const actionReducer = favoriteActionMoviesSlice.reducer;
