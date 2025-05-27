@@ -2,7 +2,10 @@ import { Box, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
 import { useEffect } from "react";
-import { fetchFavoriteComedyMovies } from "../../store/slices/homePage-slice/favoriteMoviesSlice";
+import {
+  fetchFavoriteActionMovies,
+  fetchFavoriteComedyMovies,
+} from "../../store/slices/homePage-slice/favoriteMoviesSlice";
 
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -15,11 +18,17 @@ const Movies = () => {
   const { results, loading } = useSelector(
     (state: RootState) => state.favoriteComedyMovies
   );
+
+  const { results: actionResults } = useSelector(
+    (state: RootState) => state.favoriteActionMovies
+  );
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchPages = async () => {
       for (let i = 1; i <= 7; i++) {
         await dispatch(fetchFavoriteComedyMovies(i));
+        await dispatch(fetchFavoriteActionMovies(i));
       }
     };
     fetchPages();
@@ -44,6 +53,7 @@ const Movies = () => {
       <Typography className="movie-comedy-title" variant="h6">
         Popular Comedy Movies
       </Typography>
+
       <Swiper
         modules={[Autoplay, Navigation]}
         slidesPerView={6}
@@ -62,6 +72,32 @@ const Movies = () => {
               className="movie-comedy-image"
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
               alt={movie.title}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <Typography className="movie-comedy-title" variant="h6">
+        Popular Action Movies
+      </Typography>
+
+      <Swiper
+        modules={[Autoplay, Navigation]}
+        slidesPerView={6}
+        navigation
+        autoplay={{ delay: 13000 }}
+        loop={true}
+      >
+        {actionResults.map((movies) => (
+          <SwiperSlide key={movies.id}>
+            <img
+              onClick={() =>
+                navigate(`/movie-detail/${movies.id}`, {
+                  state: { movies },
+                })
+              }
+              className="movie-comedy-image"
+              src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`}
+              alt={movies.title}
             />
           </SwiperSlide>
         ))}
