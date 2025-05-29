@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { GetMoviesByGenreDTO } from "../../../services/favoriteMoviesService";
+
 import * as favoriteMoviesService from "../../../services/favoriteMoviesService";
 import { toast } from "react-toastify";
 
