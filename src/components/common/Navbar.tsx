@@ -25,7 +25,7 @@ export default function Navbar() {
   const pages =
     language === "tr-TR"
       ? ["Filmler", "Diziler", "Hakkımızda"]
-      : ["Movies", "TV Shows", "About"];
+      : ["Movies", "Series", "About"];
 
   const settings =
     language === "tr-TR"
@@ -50,6 +50,16 @@ export default function Navbar() {
     setAnchorElUser(null);
   };
 
+  const handlePageClick = (page: string) => {
+    if (page === "Diziler" || page === "Series") {
+      navigate("/series");
+    } else if (page === "Filmler" || page === "Movies") {
+      navigate("/");
+    } else if (page === "Hakkımızda" || page === "About") {
+      navigate("/about");
+    }
+  };
+
   return (
     <AppBar
       position="sticky"
@@ -63,7 +73,7 @@ export default function Navbar() {
       <Container maxWidth={false}>
         <Toolbar disableGutters>
           <Typography
-            onClick={() => navigate("/")}
+            onClick={() => handlePageClick(pages[0])}
             variant="h6"
             noWrap
             component="a"
@@ -123,7 +133,13 @@ export default function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    handlePageClick(page);
+                  }}
+                >
                   <Typography sx={{ color: "#8E1616", textAlign: "center" }}>
                     {page}
                   </Typography>
@@ -159,7 +175,10 @@ export default function Navbar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => {
+                  handleCloseNavMenu();
+                  handlePageClick(page);
+                }}
                 sx={{
                   my: 2,
                   color: "#ff4a4a",

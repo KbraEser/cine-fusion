@@ -6,6 +6,7 @@ import {
   comedyReducer,
   actionReducer,
 } from "./slices/homePage-slice/favoriteMoviesSlice";
+import { topRatedSeriesReducer } from "./slices/series/seriesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     movieDetails: movieDetailsReducer,
     favoriteComedyMovies: comedyReducer,
     favoriteActionMovies: actionReducer,
+    topRatedSeries: topRatedSeriesReducer,
   },
 });
 
