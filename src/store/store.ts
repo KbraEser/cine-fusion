@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import popularMoviesReducer from "./slices/homePage-slice/popularMoviesSlice";
+
 import languageReducer from "./slices/languageSlice";
 import movieDetailsReducer from "./slices/movieDetailsSlice";
 import {
@@ -8,7 +9,7 @@ import {
 } from "./slices/homePage-slice/favoriteMoviesSlice";
 import { topRatedSeriesReducer } from "./slices/series/seriesSlice";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     popularMovies: popularMoviesReducer,
     language: languageReducer,
@@ -21,3 +22,5 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export { store };

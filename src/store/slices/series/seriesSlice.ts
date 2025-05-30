@@ -67,7 +67,13 @@ const seriesSlice = createSlice({
       })
       .addCase(fetchTopRatedSeries.fulfilled, (state, action) => {
         state.loading = false;
-        state.results = [...state.results, ...action.payload.results];
+        const existingIds = new Set(
+          state.results.map((series: SeriesPage) => series.id)
+        );
+        const newSeries = action.payload.results.filter(
+          (series: SeriesPage) => !existingIds.has(series.id)
+        );
+        state.results = [...state.results, ...newSeries];
         state.total_pages = action.payload.total_pages;
         state.total_results = action.payload.total_results;
         state.page = action.payload.page;

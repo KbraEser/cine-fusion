@@ -6,14 +6,17 @@ import {
   fetchFavoriteActionMovies,
   fetchFavoriteComedyMovies,
 } from "../../store/slices/homePage-slice/favoriteMoviesSlice";
+import { useLoader } from "../../context/LoaderContext";
 
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "../../style/movies.scss";
 import { useNavigate } from "react-router-dom";
+
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { showLoader, hideLoader } = useLoader();
 
   const { results, loading } = useSelector(
     (state: RootState) => state.favoriteComedyMovies
@@ -24,11 +27,17 @@ const Movies = () => {
   );
 
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchPages = async () => {
-      for (let i = 1; i <= 7; i++) {
-        await dispatch(fetchFavoriteComedyMovies(i));
-        await dispatch(fetchFavoriteActionMovies(i));
+      try {
+        showLoader();
+        for (let i = 1; i <= 7; i++) {
+          await dispatch(fetchFavoriteComedyMovies(i));
+          await dispatch(fetchFavoriteActionMovies(i));
+        }
+      } finally {
+        hideLoader();
       }
     };
     fetchPages();

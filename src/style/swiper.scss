@@ -1,4 +1,4 @@
-@import "./theme";
+@use "./_theme.scss" as *;
 
 .slider-wrapper {
   width: 100%;

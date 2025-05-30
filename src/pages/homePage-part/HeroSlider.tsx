@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../style/swiper.scss";
 import { useNavigate } from "react-router-dom";
+import { useLoader } from "../../context/LoaderContext";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -24,14 +25,20 @@ interface PopularMovies {
 const HeroSlider = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const { showLoader, hideLoader } = useLoader();
   const popularMovies = useSelector(
     (state: RootState) => state.popularMovies
   ) as PopularMovies;
 
   useEffect(() => {
     const fetchPages = async () => {
-      for (let i = 1; i <= 5; i++) {
-        await dispatch(fetchPopularMovies({ page: i }));
+      try {
+        showLoader();
+        for (let i = 1; i <= 5; i++) {
+          await dispatch(fetchPopularMovies({ page: i }));
+        }
+      } finally {
+        hideLoader();
       }
     };
     fetchPages();
