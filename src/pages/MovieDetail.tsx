@@ -17,21 +17,33 @@ import {
 } from "../store/slices/movieDetailsSlice";
 import { useEffect, useState } from "react";
 import "../style/popularMoviesDetail.scss";
+import { useLoader } from "../context/LoaderContext";
 
 const MovieDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
+  const { showLoader, hideLoader } = useLoader();
   const { results, cast, video } = useSelector(
     (state: RootState) => state.movieDetails
   );
   const { language } = useSelector((state: RootState) => state.language);
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchMovieDetails(Number(id)));
-      dispatch(fetchCast(id.toString()));
-      dispatch(fetchVideo(id.toString()));
-    }
+    const fetchData = async () => {
+      if (id) {
+        try {
+          showLoader();
+          await Promise.all([
+            dispatch(fetchMovieDetails(Number(id))),
+            dispatch(fetchCast(id.toString())),
+            dispatch(fetchVideo(id.toString())),
+          ]);
+        } finally {
+          hideLoader();
+        }
+      }
+    };
+    fetchData();
   }, [id, language, dispatch]);
 
   const movie = results.find((movie) => movie.id === Number(id));

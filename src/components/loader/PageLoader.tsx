@@ -1,11 +1,18 @@
-import Box from "@mui/material/Box";
-import LinearProgress from "@mui/material/LinearProgress";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const PageLoader = () => {
   return (
-    <Box px={3.75} width={1} minHeight="100vh">
-      <LinearProgress />
-    </Box>
+    <Backdrop
+      sx={{
+        color: "#fff",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
+      }}
+      open={true}
+    >
+      <CircularProgress color="primary" />
+    </Backdrop>
   );
 };
 
