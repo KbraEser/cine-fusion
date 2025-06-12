@@ -7,7 +7,12 @@ import {
   comedyReducer,
   actionReducer,
 } from "./slices/homePage-slice/favoriteMoviesSlice";
-import { topRatedSeriesReducer } from "./slices/series/seriesSlice";
+import {
+  topRatedSeriesReducer,
+  popularSeriesReducer,
+  onTheAirSeriesReducer,
+} from "./slices/series/seriesSlice";
+import seriesDetailReducer from "./slices/series/seriesDetailSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,6 +22,9 @@ const store = configureStore({
     favoriteComedyMovies: comedyReducer,
     favoriteActionMovies: actionReducer,
     topRatedSeries: topRatedSeriesReducer,
+    popularSeries: popularSeriesReducer,
+    onTheAirSeries: onTheAirSeriesReducer,
+    seriesDetail: seriesDetailReducer,
   },
 });
 

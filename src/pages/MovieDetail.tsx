@@ -16,7 +16,7 @@ import {
   fetchVideo,
 } from "../store/slices/movieDetailsSlice";
 import { useEffect, useState } from "react";
-import "../style/popularMoviesDetail.scss";
+import "../style/detailPages.scss";
 import { useLoader } from "../context/LoaderContext";
 
 const MovieDetail = () => {
@@ -27,6 +27,11 @@ const MovieDetail = () => {
     (state: RootState) => state.movieDetails
   );
   const { language } = useSelector((state: RootState) => state.language);
+  const movie = results.find((movie) => movie.id === Number(id));
+
+  const [openTrailer, setOpenTrailer] = useState(false);
+  const handleOpen = () => setOpenTrailer(true);
+  const handleClose = () => setOpenTrailer(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,12 +51,6 @@ const MovieDetail = () => {
     fetchData();
   }, [id, language, dispatch]);
 
-  const movie = results.find((movie) => movie.id === Number(id));
-
-  const [openTrailer, setOpenTrailer] = useState(false);
-  const handleOpen = () => setOpenTrailer(true);
-  const handleClose = () => setOpenTrailer(false);
-
   return (
     <Box
       className="background"
@@ -59,7 +58,7 @@ const MovieDetail = () => {
         backgroundImage: `url(https://image.tmdb.org/t/p/original${movie?.backdrop_path})`,
       }}
     >
-      <Box className="movie-detail-container">
+      <Box className="detail-container">
         <Box className="overlay">
           <Typography className="title">{movie?.title}</Typography>
           <Typography className="tagline">{movie?.tagline}</Typography>
@@ -139,7 +138,7 @@ const MovieDetail = () => {
                 <Box
                   sx={{
                     position: "relative",
-                    paddingTop: "56.25%", // 16:9 aspect ratio
+                    paddingTop: "56.25%",
                     width: "100%",
                   }}
                 >
