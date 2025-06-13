@@ -79,7 +79,7 @@ const Movies = () => {
                 })
               }
               className="movie-comedy-image"
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
               alt={movie.title}
             />
           </SwiperSlide>
@@ -105,7 +105,7 @@ const Movies = () => {
                 })
               }
               className="movie-comedy-image"
-              src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w342/${movies.poster_path}`}
               alt={movies.title}
             />
           </SwiperSlide>

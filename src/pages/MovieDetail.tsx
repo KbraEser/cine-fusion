@@ -8,16 +8,19 @@ import {
   DialogContent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../store/store";
 import {
   fetchCast,
   fetchMovieDetails,
   fetchVideo,
+  fetchSimilarMovies,
 } from "../store/slices/movieDetailsSlice";
 import { useEffect, useState } from "react";
 import "../style/detailPages.scss";
 import { useLoader } from "../context/LoaderContext";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -28,6 +31,7 @@ const MovieDetail = () => {
   );
   const { language } = useSelector((state: RootState) => state.language);
   const movie = results.find((movie) => movie.id === Number(id));
+  const navigate = useNavigate();
 
   const [openTrailer, setOpenTrailer] = useState(false);
   const handleOpen = () => setOpenTrailer(true);
@@ -42,6 +46,7 @@ const MovieDetail = () => {
             dispatch(fetchMovieDetails(Number(id))),
             dispatch(fetchCast(id.toString())),
             dispatch(fetchVideo(id.toString())),
+            dispatch(fetchSimilarMovies(id.toString())),
           ]);
         } finally {
           hideLoader();
@@ -82,8 +87,9 @@ const MovieDetail = () => {
             </Typography>
             {movie?.overview ? (
               <>
-                {movie.overview.split(".").slice(0, 2).join(".")}
-                {"."}
+                {movie.overview.length > 135
+                  ? movie.overview.substring(0, 210) + "..."
+                  : movie.overview}
               </>
             ) : null}
           </Typography>
@@ -99,7 +105,7 @@ const MovieDetail = () => {
                     className="cast-section-card-image"
                     src={
                       actor.profile_path
-                        ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                        ? `https://image.tmdb.org/t/p/w92${actor.profile_path}`
                         : "/assets/img/avatar.png"
                     }
                     alt={actor.name}
@@ -163,6 +169,72 @@ const MovieDetail = () => {
             </Button>
           </Card>
         </Box>
+      </Box>
+      <Box className="similar-section">
+        <Typography
+          variant="h6"
+          sx={{ mb: 2, color: "#ff4a4a", fontWeight: "bold" }}
+        >
+          Similar Movies
+        </Typography>
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          spaceBetween={4}
+          slidesPerView={5}
+          navigation
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: false,
+          }}
+          loop={true}
+          breakpoints={{
+            320: {
+              slidesPerView: 2,
+              spaceBetween: 5,
+            },
+            640: {
+              slidesPerView: 3,
+              spaceBetween: 8,
+            },
+            768: {
+              slidesPerView: 4,
+              spaceBetween: 8,
+            },
+            1024: {
+              slidesPerView: 8,
+              spaceBetween: 5,
+            },
+          }}
+        >
+          {results
+            .filter((item) => item.id !== Number(id))
+            .map((movie) => (
+              <SwiperSlide key={movie.id}>
+                <Box className="similar-section-card">
+                  <img
+                    className="similar-section-card-image"
+                    src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
+                    alt={movie.title}
+                    style={{
+                      width: "40%",
+                      height: "30%",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                      cursor: "pointer",
+                      transition: "transform 0.3s ease",
+                    }}
+                    onClick={() => navigate(`/movie-detail/${movie.id}`)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.05)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                    }}
+                  />
+                </Box>
+              </SwiperSlide>
+            ))}
+        </Swiper>
       </Box>
     </Box>
   );

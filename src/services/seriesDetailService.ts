@@ -45,3 +45,19 @@ export const fetchSeriesVideo = async (seriesId: string) => {
     throw error;
   }
 };
+
+export const fetchSimilarSeries = async (seriesId: string) => {
+  try {
+    const response = await api.get(`/tv/${seriesId}/similar`, {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+        accept: "application/json",
+      },
+    });
+    console.log(response.data.results);
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching similar series:", error);
+    throw error;
+  }
+};
