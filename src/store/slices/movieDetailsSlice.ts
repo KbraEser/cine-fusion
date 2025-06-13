@@ -90,6 +90,23 @@ export const fetchVideo = createAsyncThunk(
   }
 );
 
+export const fetchSimilarMovies = createAsyncThunk(
+  "movieDetails/fetchSimilarMovies",
+  async (movieId: string, { rejectWithValue }) => {
+    try {
+      const response = await movieDetailsService.fetchSimilarMovies(movieId);
+      return response;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Benzer filmler yüklenirken bir hata oluştu";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const movieDetailsSlice = createSlice({
   name: "movieDetails",
   initialState,
@@ -129,6 +146,18 @@ const movieDetailsSlice = createSlice({
         state.video = action.payload;
       })
       .addCase(fetchVideo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Bir hata oluştu";
+      })
+      .addCase(fetchSimilarMovies.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSimilarMovies.fulfilled, (state, action) => {
+        state.loading = false;
+        state.results = [...state.results, ...action.payload];
+      })
+      .addCase(fetchSimilarMovies.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "Bir hata oluştu";
       });

@@ -93,6 +93,23 @@ export const fetchSeriesVideo = createAsyncThunk(
   }
 );
 
+export const fetchSimilarSeries = createAsyncThunk(
+  "series/fetchSimilarSeries",
+  async (seriesId: string, { rejectWithValue }) => {
+    try {
+      const response = await seriesDetailService.fetchSimilarSeries(seriesId);
+      return response;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Benzer diziler yüklenirken bir hata oluştu";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const seriesDetailSlice = createSlice({
   name: "seriesDetail",
   initialState,
@@ -134,6 +151,18 @@ const seriesDetailSlice = createSlice({
       .addCase(fetchSeriesVideo.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Bir hata oluştu";
+      })
+      .addCase(fetchSimilarSeries.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSimilarSeries.fulfilled, (state, action) => {
+        state.loading = false;
+        state.results = [...state.results, ...action.payload];
+      })
+      .addCase(fetchSimilarSeries.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Bir hata oluştu";
       });
   },
 });

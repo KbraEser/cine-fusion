@@ -62,7 +62,7 @@ const SeriesPage = () => {
                   state: { series },
                 })
               }
-              src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w154/${series.poster_path}`}
               alt={series.title}
             />
           </SwiperSlide>
@@ -86,7 +86,7 @@ const SeriesPage = () => {
                   state: { series },
                 })
               }
-              src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w154/${series.poster_path}`}
               alt={series.title}
             />
           </SwiperSlide>
@@ -110,7 +110,7 @@ const SeriesPage = () => {
                   state: { series },
                 })
               }
-              src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w154/${series.poster_path}`}
               alt={series.title}
             />
           </SwiperSlide>

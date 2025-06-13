@@ -24,7 +24,6 @@
 
 .detail-container {
   width: 100%;
-  height: calc(100vh - 100.5px);
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
@@ -85,7 +84,7 @@
 
       &-card {
         text-align: center;
-        padding: 0.4rem;
+        padding: 0.1rem;
 
         &-image {
           width: 60px;
@@ -112,8 +111,8 @@
     }
 
     &-card {
-      width: 300px;
-      height: 450px;
+      width: 250px;
+      height: 340px;
       background-size: cover;
       background-position: center;
       border-radius: $border-radius-md;
@@ -121,14 +120,6 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-
-      @media (max-width: 1024px) {
-        height: 400px;
-      }
-
-      @media (max-width: 768px) {
-        height: 350px;
-      }
 
       .MuiCardActions-root {
         padding: 15px;
@@ -145,6 +136,40 @@
           background-color: $button-hover;
         }
       }
+    }
+  }
+}
+
+.similar-section {
+  margin-top: 0.5rem;
+  padding: 0.1rem 3rem;
+  position: relative;
+  z-index: 10;
+
+  .swiper {
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: $red-light;
+
+      &:after {
+        font-size: 20px;
+      }
+    }
+
+    .swiper-button-next {
+      right: 10px;
+    }
+
+    .swiper-button-prev {
+      left: 10px;
+    }
+  }
+
+  .similar-section-card {
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
     }
   }
 }

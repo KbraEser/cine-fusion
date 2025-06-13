@@ -56,3 +56,18 @@ export const fetchVideo = async (movieId: string) => {
     throw error;
   }
 };
+
+export const fetchSimilarMovies = async (movieId: string) => {
+  try {
+    const response = await api.get(`/movie/${movieId}/similar`, {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
+        accept: "application/json",
+      },
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching similar movies:", error);
+    throw error;
+  }
+};

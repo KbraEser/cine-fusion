@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { RootState } from "../store/store";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store/store";
@@ -18,8 +18,11 @@ import {
   fetchSeriesCast,
   fetchSeriesDetail,
   fetchSeriesVideo,
+  fetchSimilarSeries,
 } from "../store/slices/series/seriesDetailSlice";
 import "../style/detailPages.scss";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
 
 const SeriesDetailPage = () => {
   const { id } = useParams();
@@ -33,6 +36,7 @@ const SeriesDetailPage = () => {
   const [openTrailer, setOpenTrailer] = useState(false);
   const handleOpen = () => setOpenTrailer(true);
   const handleClose = () => setOpenTrailer(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +47,7 @@ const SeriesDetailPage = () => {
             dispatch(fetchSeriesDetail(Number(id))),
             dispatch(fetchSeriesCast(id.toString())),
             dispatch(fetchSeriesVideo(id.toString())),
+            dispatch(fetchSimilarSeries(id.toString())),
           ]);
         } finally {
           hideLoader();
@@ -80,8 +85,9 @@ const SeriesDetailPage = () => {
             </Typography>
             {series?.overview ? (
               <>
-                {series.overview.split(".").slice(0, 2).join(".")}
-                {"."}
+                {series.overview.length > 135
+                  ? series.overview.substring(0, 230) + "..."
+                  : series.overview}
               </>
             ) : null}
           </Typography>
@@ -96,7 +102,7 @@ const SeriesDetailPage = () => {
                     className="cast-section-card-image"
                     src={
                       actor.profile_path
-                        ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                        ? `https://image.tmdb.org/t/p/w92${actor.profile_path}`
                         : "/assets/img/avatar.png"
                     }
                     alt={actor.name}
@@ -160,6 +166,72 @@ const SeriesDetailPage = () => {
             </Button>
           </Card>
         </Box>
+      </Box>
+      <Box className="similar-section">
+        <Typography
+          variant="h6"
+          sx={{ mb: 2, color: "#ff4a4a", fontWeight: "bold" }}
+        >
+          Similar Series
+        </Typography>
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          spaceBetween={4}
+          slidesPerView={5}
+          navigation
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: false,
+          }}
+          loop={true}
+          breakpoints={{
+            320: {
+              slidesPerView: 2,
+              spaceBetween: 5,
+            },
+            640: {
+              slidesPerView: 3,
+              spaceBetween: 8,
+            },
+            768: {
+              slidesPerView: 4,
+              spaceBetween: 8,
+            },
+            1024: {
+              slidesPerView: 8,
+              spaceBetween: 5,
+            },
+          }}
+        >
+          {results
+            .filter((item) => item.id !== Number(id))
+            .map((item) => (
+              <SwiperSlide key={item.id}>
+                <Box className="similar-section-card">
+                  <img
+                    className="similar-section-card-image"
+                    src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
+                    alt={item.name}
+                    style={{
+                      width: "40%",
+                      height: "30%",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                      cursor: "pointer",
+                      transition: "transform 0.3s ease",
+                    }}
+                    onClick={() => navigate(`/series/${item.id}`)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.05)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                    }}
+                  />
+                </Box>
+              </SwiperSlide>
+            ))}
+        </Swiper>
       </Box>
     </Box>
   );
