@@ -21,40 +21,64 @@ import "../style/detailPages.scss";
 import { useLoader } from "../context/LoaderContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
+import { toast } from "react-toastify";
 
 const MovieDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { showLoader, hideLoader } = useLoader();
-  const { results, cast, video } = useSelector(
+  const { results, cast, video, loading } = useSelector(
     (state: RootState) => state.movieDetails
   );
   const { language } = useSelector((state: RootState) => state.language);
   const movie = results.find((movie) => movie.id === Number(id));
   const navigate = useNavigate();
-
   const [openTrailer, setOpenTrailer] = useState(false);
-  const handleOpen = () => setOpenTrailer(true);
-  const handleClose = () => setOpenTrailer(false);
 
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
         try {
           showLoader();
+      
           await Promise.all([
             dispatch(fetchMovieDetails(Number(id))),
             dispatch(fetchCast(id.toString())),
-            dispatch(fetchVideo(id.toString())),
-            dispatch(fetchSimilarMovies(id.toString())),
           ]);
+         
+          await dispatch(fetchSimilarMovies(id.toString()));
+        } catch (error) {
+          toast.error("Film bilgileri yüklenirken bir hata oluştu");
         } finally {
           hideLoader();
         }
       }
     };
+
     fetchData();
+    
+  
+    return () => {
+      dispatch({ type: 'movieDetails/reset' });
+    };
   }, [id, language, dispatch]);
+
+  const handleTrailerClick = async() => {
+    if(!video){
+      try {
+        showLoader();
+        await dispatch(fetchVideo(id?.toString() ?? ""));
+      } catch (error) {
+        toast.error("Video yüklenirken bir hata oluştu");
+      } finally {
+        hideLoader();
+      }
+    }
+    setOpenTrailer(true);
+  }
+
+  const handleClose = () => setOpenTrailer(false);
+
 
   return (
     <Box
@@ -164,7 +188,7 @@ const MovieDetail = () => {
                 </Box>
               </DialogContent>
             </Dialog>
-            <Button className="video-section-card-button" onClick={handleOpen}>
+            <Button className="video-section-card-button" onClick={handleTrailerClick}>
               Watch Trailer
             </Button>
           </Card>
@@ -177,64 +201,66 @@ const MovieDetail = () => {
         >
           Similar Movies
         </Typography>
-        <Swiper
-          modules={[Autoplay, Navigation]}
-          spaceBetween={4}
-          slidesPerView={5}
-          navigation
-          autoplay={{
-            delay: 3500,
-            disableOnInteraction: false,
-          }}
-          loop={true}
-          breakpoints={{
-            320: {
-              slidesPerView: 2,
-              spaceBetween: 5,
-            },
-            640: {
-              slidesPerView: 3,
-              spaceBetween: 8,
-            },
-            768: {
-              slidesPerView: 4,
-              spaceBetween: 8,
-            },
-            1024: {
-              slidesPerView: 8,
-              spaceBetween: 5,
-            },
-          }}
-        >
-          {results
-            .filter((item) => item.id !== Number(id))
-            .map((movie) => (
-              <SwiperSlide key={movie.id}>
-                <Box className="similar-section-card">
-                  <img
-                    className="similar-section-card-image"
-                    src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                    alt={movie.title}
-                    style={{
-                      width: "40%",
-                      height: "30%",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      transition: "transform 0.3s ease",
-                    }}
-                    onClick={() => navigate(`/movie-detail/${movie.id}`)}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "scale(1.05)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "scale(1)";
-                    }}
-                  />
-                </Box>
-              </SwiperSlide>
-            ))}
-        </Swiper>
+        {results.length > 1 && (
+          <Swiper
+            modules={[Autoplay, Navigation]}
+            spaceBetween={4}
+            slidesPerView={5}
+            navigation  
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            breakpoints={{
+              320: {
+                slidesPerView: 2,
+                spaceBetween: 5,
+              },
+              640: {
+                slidesPerView: 3,
+                spaceBetween: 8,
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 8,
+              },
+              1024: {
+                slidesPerView: 8,
+                spaceBetween: 5,
+              },
+            }}
+          >
+            {results
+              .filter((item) => item.id !== Number(id))
+              .map((movie) => (
+                <SwiperSlide key={movie.id}>
+                  <Box className="similar-section-card">
+                    <img
+                      className="similar-section-card-image"
+                      src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
+                      alt={movie.title}
+                      style={{
+                        width: "40%",
+                        height: "30%",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                        transition: "transform 0.3s ease",
+                      }}
+                      onClick={() => navigate(`/movie-detail/${movie.id}`)}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.05)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                      }}
+                    />
+                  </Box>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        )}
       </Box>
     </Box>
   );

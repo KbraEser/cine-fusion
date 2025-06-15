@@ -24,7 +24,7 @@ export const fetchMoviesByGenre = async (params: GetMoviesByGenreDTO) => {
       },
     });
 
-    console.log("API yanıtı:", response.data);
+   
     return response.data;
   } catch (error) {
     console.error("Error fetching favorite comedy movies:", error);

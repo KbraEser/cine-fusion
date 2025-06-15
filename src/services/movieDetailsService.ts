@@ -8,7 +8,7 @@ export const fetchMovieDetails = async (id: number) => {
         accept: "application/json",
       },
     });
-    console.log(response.data);
+  
     return response.data;
   } catch (error) {
     throw error;
@@ -65,7 +65,7 @@ export const fetchSimilarMovies = async (movieId: string) => {
         accept: "application/json",
       },
     });
-    return response.data.results;
+    return response.data;
   } catch (error) {
     console.error("Error fetching similar movies:", error);
     throw error;

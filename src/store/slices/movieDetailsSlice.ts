@@ -110,7 +110,9 @@ export const fetchSimilarMovies = createAsyncThunk(
 const movieDetailsSlice = createSlice({
   name: "movieDetails",
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMovieDetails.pending, (state) => {
@@ -155,7 +157,8 @@ const movieDetailsSlice = createSlice({
       })
       .addCase(fetchSimilarMovies.fulfilled, (state, action) => {
         state.loading = false;
-        state.results = [...state.results, ...action.payload];
+        const currentMovie = state.results[0];
+        state.results = [currentMovie, ...action.payload.results];
       })
       .addCase(fetchSimilarMovies.rejected, (state, action) => {
         state.loading = false;
