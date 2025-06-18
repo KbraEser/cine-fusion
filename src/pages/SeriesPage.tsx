@@ -32,7 +32,7 @@ const SeriesPage = () => {
   useEffect(() => {
     const fetchPages = async () => {
       showLoader();
-      for (let i = 1; i <= 7; i++) {
+      for (let i = 1; i <= 3; i++) {
         await dispatch(fetchTopRatedSeries(i));
         await dispatch(fetchPopularSeries(i));
         await dispatch(fetchOnTheAirSeries(i));
