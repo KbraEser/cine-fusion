@@ -32,7 +32,7 @@ const Movies = () => {
     const fetchPages = async () => {
       try {
         showLoader();
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 1; i <= 3; i++) {
           await dispatch(fetchFavoriteComedyMovies(i));
           await dispatch(fetchFavoriteActionMovies(i));
         }
