@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1235 650">
+  <rect width="1235" height="650" fill="#B22234"/>
+  <!-- Stripes -->
+  <rect width="1235" height="50" y="0" fill="#B22234"/>
+  <rect width="1235" height="50" y="50" fill="#FFFFFF"/>
+  <rect width="1235" height="50" y="100" fill="#B22234"/>
+  <rect width="1235" height="50" y="150" fill="#FFFFFF"/>
+  <rect width="1235" height="50" y="200" fill="#B22234"/>
+  <rect width="1235" height="50" y="250" fill="#FFFFFF"/>
+  <rect width="1235" height="50" y="300" fill="#B22234"/>
+  <rect width="1235" height="50" y="350" fill="#FFFFFF"/>
+  <rect width="1235" height="50" y="400" fill="#B22234"/>
+  <rect width="1235" height="50" y="450" fill="#FFFFFF"/>
+  <rect width="1235" height="50" y="500" fill="#B22234"/>
+  <rect width="1235" height="50" y="550" fill="#FFFFFF"/>
+  <rect width="1235" height="50" y="600" fill="#B22234"/>
+  <!-- Blue rectangle -->
+  <rect width="494" height="350" fill="#3C3B6E"/>
+  <!-- Stars would be here but simplified for now -->
+  <g fill="#FFFFFF">
+    <!-- Row 1 -->
+    <circle cx="62" cy="32" r="12"/>
+    <circle cx="124" cy="32" r="12"/>
+    <circle cx="186" cy="32" r="12"/>
+    <circle cx="248" cy="32" r="12"/>
+    <circle cx="310" cy="32" r="12"/>
+    <circle cx="372" cy="32" r="12"/>
+    <circle cx="434" cy="32" r="12"/>
+    <!-- Row 2 -->
+    <circle cx="93" cy="62" r="12"/>
+    <circle cx="155" cy="62" r="12"/>
+    <circle cx="217" cy="62" r="12"/>
+    <circle cx="279" cy="62" r="12"/>
+    <circle cx="341" cy="62" r="12"/>
+    <circle cx="403" cy="62" r="12"/>
+    <!-- Row 3 -->
+    <circle cx="62" cy="92" r="12"/>
+    <circle cx="124" cy="92" r="12"/>
+    <circle cx="186" cy="92" r="12"/>
+    <circle cx="248" cy="92" r="12"/>
+    <circle cx="310" cy="92" r="12"/>
+    <circle cx="372" cy="92" r="12"/>
+    <circle cx="434" cy="92" r="12"/>
+    <!-- Row 4 -->
+    <circle cx="93" cy="122" r="12"/>
+    <circle cx="155" cy="122" r="12"/>
+    <circle cx="217" cy="122" r="12"/>
+    <circle cx="279" cy="122" r="12"/>
+    <circle cx="341" cy="122" r="12"/>
+    <circle cx="403" cy="122" r="12"/>
+    <!-- Row 5 -->
+    <circle cx="62" cy="152" r="12"/>
+    <circle cx="124" cy="152" r="12"/>
+    <circle cx="186" cy="152" r="12"/>
+    <circle cx="248" cy="152" r="12"/>
+    <circle cx="310" cy="152" r="12"/>
+    <circle cx="372" cy="152" r="12"/>
+    <circle cx="434" cy="152" r="12"/>
+    <!-- Row 6 -->
+    <circle cx="93" cy="182" r="12"/>
+    <circle cx="155" cy="182" r="12"/>
+    <circle cx="217" cy="182" r="12"/>
+    <circle cx="279" cy="182" r="12"/>
+    <circle cx="341" cy="182" r="12"/>
+    <circle cx="403" cy="182" r="12"/>
+    <!-- Row 7 -->
+    <circle cx="62" cy="212" r="12"/>
+    <circle cx="124" cy="212" r="12"/>
+    <circle cx="186" cy="212" r="12"/>
+    <circle cx="248" cy="212" r="12"/>
+    <circle cx="310" cy="212" r="12"/>
+    <circle cx="372" cy="212" r="12"/>
+    <circle cx="434" cy="212" r="12"/>
+    <!-- Row 8 -->
+    <circle cx="93" cy="242" r="12"/>
+    <circle cx="155" cy="242" r="12"/>
+    <circle cx="217" cy="242" r="12"/>
+    <circle cx="279" cy="242" r="12"/>
+    <circle cx="341" cy="242" r="12"/>
+    <circle cx="403" cy="242" r="12"/>
+    <!-- Row 9 -->
+    <circle cx="62" cy="272" r="12"/>
+    <circle cx="124" cy="272" r="12"/>
+    <circle cx="186" cy="272" r="12"/>
+    <circle cx="248" cy="272" r="12"/>
+    <circle cx="310" cy="272" r="12"/>
+    <circle cx="372" cy="272" r="12"/>
+    <circle cx="434" cy="272" r="12"/>
+  </g>
+</svg> 

@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   Container,
@@ -8,13 +7,13 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import logo from "../../assets/img/logo.png";
 import LanguageToggle from "./LanguageToggle";
+import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
@@ -24,30 +23,17 @@ export default function Navbar() {
   const { language } = useSelector((state: RootState) => state.language);
   const pages =
     language === "tr-TR"
-      ? ["Filmler", "Diziler", "Hakkımızda"]
-      : ["Movies", "Series", "About"];
-
-  const settings =
-    language === "tr-TR"
-      ? ["Profil", "Hesap", "Panele Git", "Çıkış Yap"]
-      : ["Profile", "Account", "Dashboard", "Logout"];
+      ? ["Filmler", "Diziler"]
+      : ["Movies", "Series"];
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(e.currentTarget);
   };
-  const handleOpenUserMenu = (e: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(e.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const handlePageClick = (page: string) => {
@@ -55,8 +41,6 @@ export default function Navbar() {
       navigate("/series");
     } else if (page === "Filmler" || page === "Movies") {
       navigate("/");
-    } else if (page === "Hakkımızda" || page === "About") {
-      navigate("/about");
     }
   };
 
@@ -132,6 +116,9 @@ export default function Navbar() {
                 },
               }}
             >
+              <MenuItem sx={{ p: 2 }}>
+                <SearchBar />
+              </MenuItem>
               {pages.map((page) => (
                 <MenuItem
                   key={page}
@@ -150,27 +137,30 @@ export default function Navbar() {
 
           <Typography
             onClick={() => navigate("/")}
-            variant="h5"
+            variant="h6"
             noWrap
             component="a"
             href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "#ff4a4a",
-              textDecoration: "none",
-              cursor: "pointer",
-              "&:hover": {
-                color: "#D84040",
-              },
-            }}
+                          sx={{
+                display: { xs: "flex", md: "none" },
+                flexGrow: 1,
+                justifyContent: { xs: "flex-start", sm: "center" },
+                ml: { xs: 2, sm: 0 },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".2rem",
+                color: "#ff4a4a",
+                textDecoration: "none",
+                cursor: "pointer",
+                fontSize: { xs: "1.1rem", sm: "1.25rem" },
+                "&:hover": {
+                  color: "#D84040",
+                },
+              }}
           >
             CineFusion
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
@@ -192,42 +182,11 @@ export default function Navbar() {
               </Button>
             ))}
           </Box>
+          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            <SearchBar />
+          </Box>
           <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
             <LanguageToggle />
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 2 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{
-                mt: "45px",
-                "& .MuiPaper-root": {
-                  backgroundColor: "rgba(0, 0, 0, 0.9)",
-                },
-              }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ color: "#ff4a4a", textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
           </Box>
         </Toolbar>
       </Container>

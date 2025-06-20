@@ -220,7 +220,11 @@ const SeriesDetailPage = () => {
                       cursor: "pointer",
                       transition: "transform 0.3s ease",
                     }}
-                    onClick={() => navigate(`/series/${item.id}`)}
+                    onClick={() => {
+                      if (item.id !== Number(id)) {
+                        window.location.href = `/series/${item.id}`;
+                      }
+                    }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "scale(1.05)";
                     }}

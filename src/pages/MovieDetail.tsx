@@ -248,7 +248,11 @@ const MovieDetail = () => {
                         cursor: "pointer",
                         transition: "transform 0.3s ease",
                       }}
-                      onClick={() => navigate(`/movie-detail/${movie.id}`)}
+                      onClick={() => {
+                        if (movie.id !== Number(id)) {
+                          window.location.href = `/movie-detail/${movie.id}`;
+                        }
+                      }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.transform = "scale(1.05)";
                       }}
