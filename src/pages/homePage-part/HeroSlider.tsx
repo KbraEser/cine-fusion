@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "../../style/swiper.scss";
 import { useNavigate } from "react-router-dom";
 import { useLoader } from "../../context/LoaderContext";
+import LazyImage from "../../components/common/LazyImage";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -69,7 +70,7 @@ const HeroSlider = () => {
           .filter((movie) => movie.poster_path)
           .map((movie) => (
             <SwiperSlide key={movie.id}>
-              <img
+              <LazyImage
                 onClick={() => {
                   navigate(`/movie-detail/${movie.id}`, {
                     state: { movie },

@@ -4,6 +4,7 @@ import Topbar from "../layouts/main-layouts/topbar/index";
 import MovieDetail from "../pages/MovieDetail";
 import SeriesPage from "../pages/SeriesPage";
 import SeriesDetailPage from "../pages/SeriesDetailPage";
+
 const router = createBrowserRouter([
   {
     path: "/",

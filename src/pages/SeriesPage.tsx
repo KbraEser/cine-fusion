@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import "../style/seriesPage.scss";
 import { useLoader } from "../context/LoaderContext";
 import { useNavigate } from "react-router-dom";
+import LazyImage from "../components/common/LazyImage";
 
 const SeriesPage = () => {
   const { results: topRatedSeries } = useSelector(
@@ -56,7 +57,7 @@ const SeriesPage = () => {
       >
         {topRatedSeries.map((series) => (
           <SwiperSlide key={series.id}>
-            <img
+            <LazyImage
               onClick={() =>
                 navigate(`/series/${series.id}`, {
                   state: { series },
@@ -80,7 +81,7 @@ const SeriesPage = () => {
       >
         {popularSeries.map((series) => (
           <SwiperSlide key={series.id}>
-            <img
+            <LazyImage
               onClick={() =>
                 navigate(`/series/${series.id}`, {
                   state: { series },
@@ -104,7 +105,7 @@ const SeriesPage = () => {
       >
         {onTheAirSeries.map((series) => (
           <SwiperSlide key={series.id}>
-            <img
+            <LazyImage
               onClick={() =>
                 navigate(`/series/${series.id}`, {
                   state: { series },

@@ -13,6 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "../../style/movies.scss";
 import { useNavigate } from "react-router-dom";
+import LazyImage from "../../components/common/LazyImage";
 
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,7 +73,7 @@ const Movies = () => {
       >
         {results.map((movie) => (
           <SwiperSlide key={movie.id}>
-            <img
+            <LazyImage
               onClick={() =>
                 navigate(`/movie-detail/${movie.id}`, {
                   state: { movie },
@@ -98,7 +99,7 @@ const Movies = () => {
       >
         {actionResults.map((movies) => (
           <SwiperSlide key={movies.id}>
-            <img
+            <LazyImage
               onClick={() =>
                 navigate(`/movie-detail/${movies.id}`, {
                   state: { movies },
