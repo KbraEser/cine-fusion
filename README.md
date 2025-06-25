@@ -13,7 +13,7 @@ React-based movie and TV series platform built with TMDB API.
 
 Projenin detaylı tanıtım ve kullanım videosunu YouTube kanalımda izleyebilirsiniz:
 
-(https://www.youtube.com/watch?v=VIDEO_ID)
+(https://youtu.be/PNaZncvUb2o)
 
 Bu videoda:
 - 🎯 Projenin genel tanıtımı
