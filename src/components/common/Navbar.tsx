@@ -144,8 +144,9 @@ export default function Navbar() {
                           sx={{
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                justifyContent: { xs: "flex-start", sm: "center" },
-                ml: { xs: 2, sm: 0 },
+                justifyContent: "center",
+                alignItems: "center",
+                ml: 0,
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".2rem",
@@ -182,7 +183,7 @@ export default function Navbar() {
               </Button>
             ))}
           </Box>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
             <SearchBar />
           </Box>
           <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
